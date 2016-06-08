@@ -1,0 +1,23 @@
+/*
+QA01: installation of Atmel Studio7 on your PC
+Please download the complete installation package. Since the digital signature for windows7 is required, the driver of AVRISP mkII cannot be installed properly. Thus the device programmer tool AVRISP mkII cannot appear in the dropdown list of device programmer.
+After trying various methods by searching on internet, I finally got a solution.
+To fix this error:
+- Download Zadig: http://zadig.akeo.ie/. Zadig is a USB driver manager for Windows, and saved me a hundred times this year. The last version comes with the libusb-win32 (v1.2.6.0) driver embedded. 
+- Open Zadig, Options, List All Devices. The AVRISP mkII device should appear in the list.
+- Replace its current driver by libusb-win32 (v1.2.6.0)
+That's it! No restart required :)
+Let me know if somebody had the same issue and was able to solve it this way.
+use the software to reinstall the libusb-win32(v1.2.6.0) driver. awesome. works perfect. thank you. 
+
+QA02: _delay_ms() and user-defined loop function for delay
+the running led function cannot work properly at the very beginning. It seems that the loop function for delay or the _delay_ms function caused the program dead. and the rest of the programm cannot run.
+After tried several lines of assembly test, Mr. Han made a conclusion that the watch dog of the microcontroller takes action and keeps the program from running. 
+Then we deselected the WDTON checkbox, and reset the fuse bits. eventually the running led program outputs the correct blinks.
+
+
+
+
+
+
+*/
