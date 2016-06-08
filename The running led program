@@ -1,0 +1,51 @@
+/*
+ * led1.c
+ *
+ * Created: 2016/6/7 9:43:03
+ * Author : DSME
+ */ 
+
+#ifndef F_CPU
+#define F_CPU 1000000UL
+#endif
+#include <avr/io.h>
+#include <util/delay.h>
+
+unsigned char p1[4] = {0x81,0x42,0x24,0x18};
+unsigned char p2[4] = {0xFF,0x7E,0x3A,0x18};	
+
+void mydelay(){
+	int i;
+	for(i=1;i<500;i++){
+		_delay_ms(1);
+	}	
+}
+void BlnkLED(){
+	unsigned char i;
+	DDRC =0xff;//set PORT C as output 
+	PORTC = 0xFF;//keep all LEDS on
+	mydelay();
+	PORTC = 0x00;//keep all LEDS off
+	mydelay();
+	for (i=0;i<3;i++)
+	{
+		PORTC=p1[i];
+		mydelay();
+	}
+	PORTC=0x00;
+	for (i=0;i<3;i++)
+	{
+		PORTC=p2[i];
+		mydelay();
+	}
+	PORTC=0x00;
+}
+int main(void)
+{
+	/* Replace with your application code */
+	
+	while (1)
+	{
+		BlnkLED();
+	}
+}
