@@ -1,0 +1,33 @@
+/*
+ * led4.c
+ *
+ * Created: 2016/6/8 9:02:13
+ * Author : DSME
+ */ 
+#ifndef F_CPU
+#define F_CPU 4000000UL
+#endif
+
+#include <avr/io.h>
+
+int main(void)
+{
+    /* Replace with your application code */
+    while (1) 
+    {
+		unsigned int i;
+		
+		for(i=0;i<40000;i++);
+		for(i=0;i<40000;i++);
+		for(i=0;i<40000;i++);
+		for(i=0;i<40000;i++);
+		DDRC=0xFF;
+		PORTC=0xFF;
+		for(i=0;i<40000;i++);
+		for(i=0;i<40000;i++);
+		for(i=0;i<40000;i++);
+		for(i=0;i<40000;i++);
+		DDRC=0xFF;
+		PORTC=0x00;
+    }
+}
