@@ -22,28 +22,20 @@ void mydelay(){
 }
 unsigned char KeyInput(){
 	unsigned char keys;
-	DDRE=0x00;
-	keys=PINE;
+	DDRA=0x00;
+	keys=PINA;
 	return keys;
 }
 void BlnkLED(){
 	unsigned char i;
+	i=KeyInput();
 	DDRC = 0xff;//set PORT C as output 
 	PORTC = 0xFF;//keep all LEDS on
 	mydelay();
 	PORTC = 0x00;//keep all LEDS off
 	mydelay();
-	for (i=0;i<3;i++)
-	{
-		PORTC=p1[i];
-		mydelay();
-	}
-	PORTC=0x00;
-	for (i=0;i<3;i++)
-	{
-		PORTC=p2[i];
-		mydelay();
-	}
+	PORTC=i;
+	mydelay();
 	PORTC=0x00;
 }
 int main(void)
