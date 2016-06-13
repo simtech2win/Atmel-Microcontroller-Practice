@@ -6,13 +6,13 @@
  */ 
 
 #ifndef F_CPU
-#define F_CPU 1000000UL
+#define F_CPU 4000000UL
 #endif
 #include <avr/io.h>
 #include <util/delay.h>
 
-unsigned char p1[4] = {0x81,0x42,0x24,0x18};
-unsigned char p2[4] = {0xFF,0x7E,0x3A,0x18};	
+//unsigned char p1[4] = {0x81,0x42,0x24,0x18};
+//unsigned char p2[4] = {0xFF,0x7E,0x3A,0x18};	
 
 void mydelay(){
 	int i;
@@ -23,6 +23,7 @@ void mydelay(){
 unsigned char KeyInput(){
 	unsigned char keys;
 	DDRA=0x00;
+	PORTA=0xFF;
 	keys=PINA;
 	return keys;
 }
@@ -30,10 +31,10 @@ void BlnkLED(){
 	unsigned char i;
 	i=KeyInput();
 	DDRC = 0xff;//set PORT C as output 
-	PORTC = 0xFF;//keep all LEDS on
-	mydelay();
-	PORTC = 0x00;//keep all LEDS off
-	mydelay();
+	//PORTC = 0xFF;//keep all LEDS on
+	//mydelay();
+	//PORTC = 0x00;//keep all LEDS off
+	//mydelay();
 	PORTC=i;
 	mydelay();
 	PORTC=0x00;
