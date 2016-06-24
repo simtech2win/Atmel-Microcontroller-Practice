@@ -1,0 +1,83 @@
+/*
+ *USART.c
+ *串口发收0~127，并将PORTC的LED点亮
+ *Created:2016/06/20
+ *Author:DSME GL Zhang
+*/
+
+#ifndef F_CPU
+#define F_CPU 4000000UL
+#endif
+#include <avr/io.h>
+#include <util/delay.h>
+
+void displayLed(unsigned int NUM);//PortCLED显示函数声明
+void displayLedPortG(unsigned int NUM);//PortGLED显示函数声明
+void usartInit(void);//串口初始化函数声明
+unsigned int receiveOnechar(void);//串口接收函数声明
+void transmitOnechar(unsigned int data);//串口发送函数声明
+unsigned int NUM,RCNUM;//定义全局变量
+
+
+void mydelay(){
+	int i;
+	for(i=1;i<500;i++){
+	_delay_ms(1);
+	}
+}
+
+int main(void){
+	usartInit();//串口初始化
+	while(1){
+		NUM++;
+		transmitOnechar(NUM);
+		mydelay();
+		displayLed(NUM);
+		mydelay();
+		RCNUM=receiveOnechar();
+		mydelay();
+		displayLedPortG(RCNUM);
+		if (NUM>127){
+			NUM=0;
+		}
+	}
+}
+/*LED显示函数*/
+void displayLed(unsigned int NUM){
+	DDRC = 0xff;//set PORT C as output
+	PORTC=NUM;
+	mydelay();
+	mydelay();
+	PORTC=0x00;
+}
+void displayLedPortG(unsigned int NUM){
+	DDRG = 0xff;//set PORT C as output
+	PORTG=NUM;
+	mydelay();
+	mydelay();
+	PORTG=0x00;
+}
+/*串口初始化函数*/
+void usartInit(void){
+	UBRR0H=0;
+	UBRR0L=103;//波特率9600，标准速度模式
+	UCSR0A=0x00;//标准速度USART
+	UCSR0B=0x18;//8位数据，接收使能，发送使能，禁止中断
+	UCSR0C=0x86;//异步串口，无校验位，1停止位，8数据位
+	UBRR1H=0;
+	UBRR1L=103;//波特率9600，标准速度模式
+	UCSR1A=0x00;//标准速度USART
+	UCSR1B=0x18;//8位数据，接收使能，发送使能，禁止中断
+	UCSR1C=0x86;//异步串口，无校验位，1停止位，8数据位	
+	
+}
+/*串口接收函数*/
+unsigned int receiveOnechar(void){
+	if(!(UCSR1A & (RXC1)));
+	return UDR1;
+}
+/*串口发送函数*/
+void transmitOnechar(unsigned int data){
+	while(!(UCSR0A & (1<<UDRE0)));//等待UDR为空
+	UDR0=data;//数据写入UDR
+}
