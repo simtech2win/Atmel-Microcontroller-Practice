@@ -81,3 +81,22 @@ void transmitOnechar(unsigned int data){
 	while(!(UCSR0A & (1<<UDRE0)));//等待UDR为空
 	UDR0=data;//数据写入UDR
 }
+
+/*
+2016/6/23
+USART模块控制寄存器理解：
+unsigned char USART_receive(void){
+ while(!(UCSR0A & (1<<RXC0)));
+ return UDR0;
+ } 1左移7位
+ USART模块控制寄存器理解：
+ unsigned char USART_send(unsigned char data){
+ while(!(UCSR0A & (1<<UDRE0))); 
+ return UDR0;
+ } 1左移5位
+ USART模块发送同时LED指示发送了数据1~127，发送数据T指示LED红灯闪烁指示，在短接发送接收的情况下，接收数据R指示等长亮绿色
+ 韩工解释：已经确认了通信回路上的两个通信元件IC104、IC105位半双工，所以前述短接发送和接收的方法是不可以实现自收发的
+ 启用另一个串行通信接口COMA，UCSR1A，COMB，UCSR0A，结果发送显示正常，接收R的LED在程序运行一段时间后常亮，结果不正常。
+ 韩工解释由于R104，R105为半双工通信元件，可能COMA、COMB的第三脚E为使能作用，确认冰山佳德检测治具并不联结，也就是E并不是用于Enable
+ 查IC104、IC105式样书显示Pin2、3短接，并连接到芯片的PD6、PD5引脚，在设置为高电平时，发送使能，设置为低电平时，为接收使能
+*/
